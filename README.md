@@ -3,7 +3,7 @@ Egípcia, jogo de cartas
 2 a 4 jogadores
 52 ou 104 cartas
 
-ou criar um jogo de cartas, chamado Egípcia, em python. Pode ser jogado de 1 (contra CPU) a 4 jogadores em rede. Serão dois baralhos, onde o naipe não tem relevância, apenas mostrar para colocar as imagens depois. 
+Vou criar um jogo de cartas, chamado Egípcia, em python. Pode ser jogado de 1 (contra CPU) a 4 jogadores em rede. Serão dois baralhos, onde o naipe não tem relevância, apenas mostrar para colocar as imagens depois. 
 
 Preparação do jogo:
 
@@ -29,5 +29,13 @@ Quando conseguir descartar as 3 cartas que estavam viradas para cima, deverá jo
 Vence quem conseguir ficar sem nenhuma carta na mão e na mesa.
 
 ## Links Úteis
+
 [Baralhos](https://pense-python.caravela.club/18-heranca/04-baralhos.html)
 [Python](https://pt.stackoverflow.com/questions/261210/estrutura-de-dados-que-represente-um-baralho-de-cartas)
+
+## Imagens Inspiração
+
+![299f2186-7fbf-458e-a7ae-eecc37de194d](https://github.com/brenowho/egipty_card_game/assets/146211848/ab784443-93ee-4c9d-b4f0-a5da57ac22fa)
+![9cfad3ef-f844-4a1e-afd9-9fb3fa2682e4](https://github.com/brenowho/egipty_card_game/assets/146211848/81504967-c664-4f85-acf3-06e05dc47aa6)
+![5a456615-9b1e-4ce5-804b-cba732ba4182](https://github.com/brenowho/egipty_card_game/assets/146211848/53b817ee-7582-40c5-8b87-850341b2ae47)
+![50328c18-1730-4bd7-a51a-7c6f39deab39](https://github.com/brenowho/egipty_card_game/assets/146211848/5781b0df-3eed-458d-9eeb-b6a5f2c25bbb)
