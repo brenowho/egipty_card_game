@@ -1,0 +1,182 @@
+import pygame
+import os
+import random
+import sys
+
+# Inicialização do Pygame
+pygame.init()
+
+# Definindo a janela
+screen = pygame.display.set_mode((1200, 600))
+pygame.display.set_caption("Egípcia")
+
+IMAGEM_MESA = pygame.image.load(os.path.join('imgs', 'mesa.jpg'))
+IMAGEM_BACKGROUND = pygame.image.load(os.path.join('imgs', 'background.jpg'))
+
+# Carregue as imagens das cartas
+IMAGEM_CARTAS = [pygame.image.load(os.path.join('imgs', 'A♦.png')),
+                pygame.image.load(os.path.join('imgs', '2♦.png')),
+                pygame.image.load(os.path.join('imgs', '3♦.png')),
+                pygame.image.load(os.path.join('imgs', '4♦.png')),
+                pygame.image.load(os.path.join('imgs', '5♦.png')),
+                pygame.image.load(os.path.join('imgs', '6♦.png')),
+                pygame.image.load(os.path.join('imgs', '7♦.png')),
+                pygame.image.load(os.path.join('imgs', '8♦.png')),
+                pygame.image.load(os.path.join('imgs', '9♦.png')),
+                pygame.image.load(os.path.join('imgs', '10♦.png')),
+                pygame.image.load(os.path.join('imgs', 'J♦.png')),
+                pygame.image.load(os.path.join('imgs', 'Q♦.png')),
+                pygame.image.load(os.path.join('imgs', 'K♦.png')),
+                pygame.image.load(os.path.join('imgs', 'A♥.png')),
+                pygame.image.load(os.path.join('imgs', '2♥.png')),
+                pygame.image.load(os.path.join('imgs', '3♥.png')),
+                pygame.image.load(os.path.join('imgs', '4♥.png')),
+                pygame.image.load(os.path.join('imgs', '5♥.png')),
+                pygame.image.load(os.path.join('imgs', '6♥.png')),
+                pygame.image.load(os.path.join('imgs', '7♥.png')),
+                pygame.image.load(os.path.join('imgs', '8♥.png')),
+                pygame.image.load(os.path.join('imgs', '9♥.png')),
+                pygame.image.load(os.path.join('imgs', '10♥.png')),
+                pygame.image.load(os.path.join('imgs', 'J♥.png')),
+                pygame.image.load(os.path.join('imgs', 'Q♥.png')),
+                pygame.image.load(os.path.join('imgs', 'K♥.png')),
+                pygame.image.load(os.path.join('imgs', 'A♣.png')),
+                pygame.image.load(os.path.join('imgs', '2♣.png')),
+                pygame.image.load(os.path.join('imgs', '3♣.png')),
+                pygame.image.load(os.path.join('imgs', '4♣.png')),
+                pygame.image.load(os.path.join('imgs', '5♣.png')),
+                pygame.image.load(os.path.join('imgs', '6♣.png')),
+                pygame.image.load(os.path.join('imgs', '7♣.png')),
+                pygame.image.load(os.path.join('imgs', '8♣.png')),
+                pygame.image.load(os.path.join('imgs', '9♣.png')),
+                pygame.image.load(os.path.join('imgs', '10♣.png')),
+                pygame.image.load(os.path.join('imgs', 'J♣.png')),
+                pygame.image.load(os.path.join('imgs', 'Q♣.png')),
+                pygame.image.load(os.path.join('imgs', 'K♣.png')),
+                pygame.image.load(os.path.join('imgs', 'A♠.png')),
+                pygame.image.load(os.path.join('imgs', '2♠.png')),
+                pygame.image.load(os.path.join('imgs', '3♠.png')),
+                pygame.image.load(os.path.join('imgs', '4♠.png')),
+                pygame.image.load(os.path.join('imgs', '5♠.png')),
+                pygame.image.load(os.path.join('imgs', '6♠.png')),
+                pygame.image.load(os.path.join('imgs', '7♠.png')),
+                pygame.image.load(os.path.join('imgs', '8♠.png')),
+                pygame.image.load(os.path.join('imgs', '9♠.png')),
+                pygame.image.load(os.path.join('imgs', '10♠.png')),
+                pygame.image.load(os.path.join('imgs', 'J♠.png')),
+                pygame.image.load(os.path.join('imgs', 'Q♠.png')),
+                pygame.image.load(os.path.join('imgs', 'K♠.png'))]
+
+# Redimensione as imagens pela metade
+IMAGEM_CARTAS = [pygame.transform.scale(card, (int(card.get_width() / 2), int(card.get_height() / 2))) for card in IMAGEM_CARTAS]
+
+# Embaralhar o baralho
+random.shuffle(IMAGEM_CARTAS)
+
+# Largura e altura das cartas
+carta_width = IMAGEM_CARTAS[0].get_width()
+carta_height = IMAGEM_CARTAS[0].get_height()
+
+# Espaçamento entre as cartas
+spacing = 10
+
+# Redimensione as imagens dos baralhos virados para baixo
+IMAGEM_VERSO_AZUL = pygame.image.load(os.path.join('imgs', 'back_blue.png'))
+IMAGEM_VERSO_VERMELHO = pygame.image.load(os.path.join('imgs', 'back_red.png'))
+IMAGEM_VERSO_AZUL = pygame.transform.scale(IMAGEM_VERSO_AZUL, (carta_width, carta_height))
+IMAGEM_VERSO_VERMELHO = pygame.transform.scale(IMAGEM_VERSO_VERMELHO, (carta_width, carta_height))
+
+# Posições de exibição para os dois jogadores
+positions = [
+    (250, 50),  # Posição para o jogador 1
+    (250, 420),  # Posição para o jogador 2
+]
+
+# Distribuir cartas viradas para baixo e para cima
+players_hands = [[[], []], [[], []]]
+index_up_cards = [0, 0]
+
+def choose_random_card_back():
+    card_backs = [IMAGEM_VERSO_AZUL, IMAGEM_VERSO_VERMELHO]
+    return random.choice(card_backs)
+
+def distribute_cards():
+    for _ in range(3):
+        for player in range(2):
+            if IMAGEM_CARTAS:
+                card_down = choose_random_card_back()
+                players_hands[player][0].append(card_down)  # Carta virada para baixo
+                redraw_game()
+                pygame.time.delay(200)
+
+def distribute_cards_up():
+    for _ in range(3):
+        for player in range(2):
+            if IMAGEM_CARTAS:
+                card_up = IMAGEM_CARTAS.pop()
+                players_hands[player][1].append(card_up)  # Carta virada para cima
+                index_up_cards[player] += 1
+                redraw_game()
+                pygame.time.delay(200)
+
+def distribute_extra_cards():
+    for _ in range(3):
+        for player in range(2):
+            if IMAGEM_CARTAS:
+                card_up = IMAGEM_CARTAS.pop()
+                players_hands[player][1].append(pygame.transform.scale(card_up, (int(card_up.get_width() * 1.25), int(card_up.get_height() * 1.25))))
+                index_up_cards[player] += 1
+                redraw_game()
+                pygame.time.delay(200)
+
+def draw_draw_pile():
+    x_center = screen.get_width() // 3
+    y_center = screen.get_height() // 2
+    for _ in range(len(IMAGEM_CARTAS)):
+        x = x_center - (carta_width / 3)
+        y = y_center - (carta_height / 2)
+        screen.blit(IMAGEM_VERSO_AZUL, (x, y))
+        x_center += 0  # Ajuste para sobreposição das cartas no monte
+
+
+# Função para redesenhar a tela
+def redraw_game():
+    screen.blit(IMAGEM_MESA, (0, 0))
+    screen.blit(IMAGEM_BACKGROUND, (0, 0))
+
+    for player in range(2):
+        x_offset, y_offset = positions[player]
+
+        for i, card_down in enumerate(players_hands[player][0]):
+            x = x_offset + i * (carta_width + spacing)
+            y = y_offset
+            screen.blit(card_down, (x, y))
+
+        for i, card_up in enumerate(players_hands[player][1]):
+            x = x_offset + i * (carta_width + spacing)
+            y = y_offset
+            screen.blit(card_up, (x, y))
+
+    pygame.display.flip()
+
+# Distribuir cartas no início do jogo
+distribute_cards()
+distribute_cards_up()
+
+# Distribuir cartas extras aleatoriamente em cima das cartas viradas para cima
+distribute_extra_cards()
+
+# Loop principal
+running = True
+while running:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+
+    # Desenhe as cartas no centro como o monte de compras
+    draw_draw_pile()
+
+    pygame.display.flip()
+
+pygame.quit()
+sys.exit()
