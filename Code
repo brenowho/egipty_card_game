@@ -10,77 +10,33 @@ pygame.init()
 screen = pygame.display.set_mode((1200, 600))
 pygame.display.set_caption("Egípcia")
 
+# Carregando imagens comuns
 IMAGEM_MESA = pygame.image.load(os.path.join('imgs', 'mesa.jpg'))
 IMAGEM_BACKGROUND = pygame.image.load(os.path.join('imgs', 'background.jpg'))
 
-# Carregue as imagens das cartas
-IMAGEM_CARTAS = [pygame.image.load(os.path.join('imgs', 'A♦.png')),
-                pygame.image.load(os.path.join('imgs', '2♦.png')),
-                pygame.image.load(os.path.join('imgs', '3♦.png')),
-                pygame.image.load(os.path.join('imgs', '4♦.png')),
-                pygame.image.load(os.path.join('imgs', '5♦.png')),
-                pygame.image.load(os.path.join('imgs', '6♦.png')),
-                pygame.image.load(os.path.join('imgs', '7♦.png')),
-                pygame.image.load(os.path.join('imgs', '8♦.png')),
-                pygame.image.load(os.path.join('imgs', '9♦.png')),
-                pygame.image.load(os.path.join('imgs', '10♦.png')),
-                pygame.image.load(os.path.join('imgs', 'J♦.png')),
-                pygame.image.load(os.path.join('imgs', 'Q♦.png')),
-                pygame.image.load(os.path.join('imgs', 'K♦.png')),
-                pygame.image.load(os.path.join('imgs', 'A♥.png')),
-                pygame.image.load(os.path.join('imgs', '2♥.png')),
-                pygame.image.load(os.path.join('imgs', '3♥.png')),
-                pygame.image.load(os.path.join('imgs', '4♥.png')),
-                pygame.image.load(os.path.join('imgs', '5♥.png')),
-                pygame.image.load(os.path.join('imgs', '6♥.png')),
-                pygame.image.load(os.path.join('imgs', '7♥.png')),
-                pygame.image.load(os.path.join('imgs', '8♥.png')),
-                pygame.image.load(os.path.join('imgs', '9♥.png')),
-                pygame.image.load(os.path.join('imgs', '10♥.png')),
-                pygame.image.load(os.path.join('imgs', 'J♥.png')),
-                pygame.image.load(os.path.join('imgs', 'Q♥.png')),
-                pygame.image.load(os.path.join('imgs', 'K♥.png')),
-                pygame.image.load(os.path.join('imgs', 'A♣.png')),
-                pygame.image.load(os.path.join('imgs', '2♣.png')),
-                pygame.image.load(os.path.join('imgs', '3♣.png')),
-                pygame.image.load(os.path.join('imgs', '4♣.png')),
-                pygame.image.load(os.path.join('imgs', '5♣.png')),
-                pygame.image.load(os.path.join('imgs', '6♣.png')),
-                pygame.image.load(os.path.join('imgs', '7♣.png')),
-                pygame.image.load(os.path.join('imgs', '8♣.png')),
-                pygame.image.load(os.path.join('imgs', '9♣.png')),
-                pygame.image.load(os.path.join('imgs', '10♣.png')),
-                pygame.image.load(os.path.join('imgs', 'J♣.png')),
-                pygame.image.load(os.path.join('imgs', 'Q♣.png')),
-                pygame.image.load(os.path.join('imgs', 'K♣.png')),
-                pygame.image.load(os.path.join('imgs', 'A♠.png')),
-                pygame.image.load(os.path.join('imgs', '2♠.png')),
-                pygame.image.load(os.path.join('imgs', '3♠.png')),
-                pygame.image.load(os.path.join('imgs', '4♠.png')),
-                pygame.image.load(os.path.join('imgs', '5♠.png')),
-                pygame.image.load(os.path.join('imgs', '6♠.png')),
-                pygame.image.load(os.path.join('imgs', '7♠.png')),
-                pygame.image.load(os.path.join('imgs', '8♠.png')),
-                pygame.image.load(os.path.join('imgs', '9♠.png')),
-                pygame.image.load(os.path.join('imgs', '10♠.png')),
-                pygame.image.load(os.path.join('imgs', 'J♠.png')),
-                pygame.image.load(os.path.join('imgs', 'Q♠.png')),
-                pygame.image.load(os.path.join('imgs', 'K♠.png'))]
-
-# Redimensione as imagens pela metade
-IMAGEM_CARTAS = [pygame.transform.scale(card, (int(card.get_width() / 2), int(card.get_height() / 2))) for card in IMAGEM_CARTAS]
-
-# Embaralhar o baralho
-random.shuffle(IMAGEM_CARTAS)
+# Carregar cartas
+def load_card_images(carta_width, carta_height):
+    suits = ['♦', '♥', '♣', '♠']
+    ranks = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K']
+    card_images = []
+    for suit in suits:
+        for rank in ranks:
+            card_name = rank + suit + '.png'
+            card_image = pygame.image.load(os.path.join('imgs', card_name))
+            card_images.append(pygame.transform.scale(card_image, (carta_width, carta_height)))
+    return card_images
 
 # Largura e altura das cartas
-carta_width = IMAGEM_CARTAS[0].get_width()
-carta_height = IMAGEM_CARTAS[0].get_height()
+carta_width, carta_height = 100, 140  # Defina o tamanho desejado aqui
+
+# Embaralhar o baralho
+IMAGEM_CARTAS = load_card_images(carta_width, carta_height)
+random.shuffle(IMAGEM_CARTAS)
 
 # Espaçamento entre as cartas
 spacing = 10
 
-# Redimensione as imagens dos baralhos virados para baixo
+# Redimensionar imagens do verso do baralho
 IMAGEM_VERSO_AZUL = pygame.image.load(os.path.join('imgs', 'back_blue.png'))
 IMAGEM_VERSO_VERMELHO = pygame.image.load(os.path.join('imgs', 'back_red.png'))
 IMAGEM_VERSO_AZUL = pygame.transform.scale(IMAGEM_VERSO_AZUL, (carta_width, carta_height))
@@ -88,61 +44,60 @@ IMAGEM_VERSO_VERMELHO = pygame.transform.scale(IMAGEM_VERSO_VERMELHO, (carta_wid
 
 # Posições de exibição para os dois jogadores
 positions = [
-    (250, 50),  # Posição para o jogador 1
-    (250, 420),  # Posição para o jogador 2
+    (screen.get_width() // 5, screen.get_height() // 15),  # Posição para o jogador 1 (mais próximo do topo)
+    (screen.get_width() // 5, screen.get_height() // 1.5),  # Posição para o jogador 2 (mais próximo da base)
 ]
 
 # Distribuir cartas viradas para baixo e para cima
 players_hands = [[[], []], [[], []]]
 index_up_cards = [0, 0]
 
+# Escolher uma carta virada para baixo aleatória
 def choose_random_card_back():
     card_backs = [IMAGEM_VERSO_AZUL, IMAGEM_VERSO_VERMELHO]
     return random.choice(card_backs)
 
+# Função para distribuir cartas viradas para cima e para baixo
 def distribute_cards():
     for _ in range(3):
         for player in range(2):
             if IMAGEM_CARTAS:
                 card_down = choose_random_card_back()
+                card_down = pygame.transform.scale(card_down, (carta_width, carta_height))
                 players_hands[player][0].append(card_down)  # Carta virada para baixo
                 redraw_game()
-                pygame.time.delay(200)
+                pygame.time.delay(150)
 
 def distribute_cards_up():
     for _ in range(3):
         for player in range(2):
             if IMAGEM_CARTAS:
                 card_up = IMAGEM_CARTAS.pop()
+                card_up = pygame.transform.scale(card_up, (carta_width, carta_height))
                 players_hands[player][1].append(card_up)  # Carta virada para cima
                 index_up_cards[player] += 1
                 redraw_game()
-                pygame.time.delay(200)
+                pygame.time.delay(150)
 
 def distribute_extra_cards():
     for _ in range(3):
         for player in range(2):
             if IMAGEM_CARTAS:
                 card_up = IMAGEM_CARTAS.pop()
-                players_hands[player][1].append(pygame.transform.scale(card_up, (int(card_up.get_width() * 1.25), int(card_up.get_height() * 1.25))))
+                card_up = pygame.transform.scale(card_up, (int(carta_width * 1.25), int(carta_height * 1.25)))
+                players_hands[player][1].append(card_up)
                 index_up_cards[player] += 1
                 redraw_game()
-                pygame.time.delay(200)
-
-def draw_draw_pile():
-    x_center = screen.get_width() // 3
-    y_center = screen.get_height() // 2
-    for _ in range(len(IMAGEM_CARTAS)):
-        x = x_center - (carta_width / 3)
-        y = y_center - (carta_height / 2)
-        screen.blit(IMAGEM_VERSO_AZUL, (x, y))
-        x_center += 0  # Ajuste para sobreposição das cartas no monte
-
+                pygame.time.delay(150)
 
 # Função para redesenhar a tela
 def redraw_game():
     screen.blit(IMAGEM_MESA, (0, 0))
     screen.blit(IMAGEM_BACKGROUND, (0, 0))
+
+    # Posicione o monte de compras no centro da tela
+    draw_pile_x = screen.get_width() // 8 - carta_width // 8
+    draw_pile_y = screen.get_height() // 5 - carta_height // 5
 
     for player in range(2):
         x_offset, y_offset = positions[player]
@@ -157,6 +112,9 @@ def redraw_game():
             y = y_offset
             screen.blit(card_up, (x, y))
 
+    # Desenhe as cartas no centro como o monte de compras
+    screen.blit(IMAGEM_VERSO_AZUL, (draw_pile_x, draw_pile_y))
+
     pygame.display.flip()
 
 # Distribuir cartas no início do jogo
@@ -166,15 +124,53 @@ distribute_cards_up()
 # Distribuir cartas extras aleatoriamente em cima das cartas viradas para cima
 distribute_extra_cards()
 
+# Função para detectar se o clique do mouse ocorreu em uma carta
+def is_click_on_card(card_rect):
+    mouse_x, mouse_y = pygame.mouse.get_pos()
+    return card_rect.collidepoint(mouse_x, mouse_y)
+
+# Função para mover uma carta clicada para o centro da tela
+def move_card_to_center(card):
+    center_x = screen.get_width() // 2
+    center_y = screen.get_height() // 2
+    card_width, card_height = card.get_size()
+    card_x = center_x - card_width // 2
+    card_y = center_y - card_height // 2
+    return card_x, card_y
+
+# Loop principal
+running = True
+clicked_card = None  # Armazena a carta clicada
+
+while running:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+        if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:  # Verifica o clique do botão esquerdo do mouse
+            if clicked_card is None:  # Se nenhuma carta já foi clicada
+                # Verifique se o clique ocorreu em alguma das cartas do jogador
+                for player in range(2):
+                    for i, card_up in enumerate(players_hands[player][1]):
+                        card_rect = card_up.get_rect()
+                        card_rect.topleft = (positions[player][0] + i * (carta_width + spacing), positions[player][1])
+                        if is_click_on_card(card_rect):
+                            clicked_card = (player, i)
+                            break
+            else:
+                # Move a carta clicada para o centro
+                player, card_index = clicked_card
+                card = players_hands[player][1].pop(card_index)
+                card_x, card_y = move_card_to_center(card)
+                screen.blit(card, (card_x, card_y))
+                pygame.display.flip()
+                clicked_card = None
+
 # Loop principal
 running = True
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
-
-    # Desenhe as cartas no centro como o monte de compras
-    draw_draw_pile()
 
     pygame.display.flip()
 
